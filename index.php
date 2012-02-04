@@ -5,11 +5,17 @@
 	<title>Tabler</title>
 	<meta name="description" content="Tabler builds a table with a query you give it." />
 	<link rel="stylesheet" href="themes/default/default.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="js/tablesorter.js"></script>
 </head>
 <body>
 
-
-	<table cellpadding="0" cellspacing="0">
+	<script>
+		$(function(){
+			$('#t_1').tablesorter();
+		});
+	</script>
+	<table id="t_1" cellpadding="0" cellspacing="0">
 		<thead>
 			<tr>
 				<th>Name</th>
