@@ -2,4 +2,6 @@
 require_once("core/Tabler.php");
 $tb = new Tabler("select * from data");
 
-echo $tb;
+$table = $tb->GetTable();
+
+echo $table;

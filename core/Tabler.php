@@ -27,7 +27,11 @@ class Tabler
 	
 	public function GetTable()
 	{
-		
+		$header = $this->BuildHeader();
+		$data = $this->BuildDataRows();
+		$footer = $this->BuildFooter();
+		$this->tableData = $header.$data.$footer;
+		return $this->tableData;
 	}
 	
 	private function GetColumns()
@@ -46,17 +50,45 @@ class Tabler
 	
 	private function BuildHeader()
 	{
-	
+		$header = "<table class=\"tabler\" cellpadding=\"0\" cellspacing=\"0\">\n";
+		$header .= "\t<thead>\n";
+		$header .= "\t\t<tr>\n";
+		foreach($this->columnData as $column)
+		{
+			$header .= "\t\t\t<th>$column</th>\n";
+		}
+		$header .= "\t\t</tr>\n";
+		$header .= "\t</thead>\n";
+		return $header;
 	}
 	
 	private function BuildDataRows()
 	{
-		
+		$result = $this->db->query($this->sql);
+		$data = "\t<tbody>\n";
+		$columnCount = count($this->columnData);
+		while($row = $result->fetch_row())
+		{
+			$data .= "\t\t<tr>\n";
+			for ($i = 0; $i <= $columnCount -1; $i++)
+			{
+    			$data .= "\t\t\t<td>".$row[$i]."</td>\n";
+			}
+			$data .= "\t\t</tr>\n";
+		}
+		$data .= "\t</tbody>\n";
+		return $data;
+	}
+	
+	private function BuildFooter()
+	{
+		$footer = "</table>";
+		return $footer;
 	}
 	
 	public function __toString()
 	{
-		return $this->tableData;
+		return $this->GetTable;
 	}
 	
 	
