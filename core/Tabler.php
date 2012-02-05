@@ -1,29 +1,64 @@
 <?php
 require_once("config.php");
-class Tabler{
+class Tabler
+{
+	public $sorting;
+	public $theme;
 	private $db;
-	public function __construct()
+	private $sql;
+	private $tableName;
+	private $tableData;
+	private $columnData; //for holding the columns in the query (array)
+	
+	public function __construct($sql = NULL)
 	{
-		$hostname = $GLOBALS["hostname"];
-		$user = $GLOBALS["username"];
-		$pass = $GLOBALS["password"];
-		$db = $GLOBALS["db_name"];
-		$this->db = new mysqli($hostname,$user,$pass,$db);
+		$this->db = new mysqli($GLOBALS["hostname"],$GLOBALS["username"],$GLOBALS["password"],$GLOBALS["db_name"]);
 		if($this->db->connect_error)
 		{
 			die("Error Connecting to the db");
 		}
-	}
-	
-	public function GetData()
-	{
-		$sql = "select * from data";
-		$result = $this->db->query($sql);
 		
-		while($row = $result->fetch_object())
+		if($sql != NULL)
 		{
-			echo $row->name."<br />";
+			$this->sql = $sql;
+			$this->GetColumns();
 		}
 	}
+	
+	public function GetTable()
+	{
+		
+	}
+	
+	private function GetColumns()
+	{
+		//Returns array of the columns from the query.
+		$result = $this->db->query("Explain ".$this->sql);
+		$row = $result->fetch_object();
+		$this->tableName = $row->table;
+	    $columnQuery = "Describe $this->tableName";
+		$columnResult = $this->db->query($columnQuery);
+		while($columnRow = $columnResult->fetch_object())
+		{
+			$this->columnData[] = $columnRow->Field;
+		}
+	}
+	
+	private function BuildHeader()
+	{
+	
+	}
+	
+	private function BuildDataRows()
+	{
+		
+	}
+	
+	public function __toString()
+	{
+		return $this->tableData;
+	}
+	
+	
 
 }
