@@ -1,8 +1,7 @@
 <?php
 require_once("core/Tabler.php");
-$tb = new Tabler("select * from data");
+$tb = new Tabler("select * from Users");
 
-$table = $tb->GetTable();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +20,7 @@ $table = $tb->GetTable();
 			$('table').tablesorter();
 		});
 	</script>
-	<?php echo $table; ?>
+	<?php  echo $tb; ?>
 	
 
 </body>

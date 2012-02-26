@@ -6,6 +6,7 @@ class Tabler
 	public $theme;
 	private $db;
 	private $sql;
+	private $queryResult;
 	private $tableName;
 	private $tableData;
 	private $columnData; //for holding the columns in the query (array)
@@ -21,7 +22,9 @@ class Tabler
 		if($sql != NULL)
 		{
 			$this->sql = $sql;
-			$this->GetColumns();
+			$this->queryResult = $this->db->query($this->sql);
+			$this->columnData = $this->queryResult->fetch_fields();
+			$this->GetTable();
 		}
 	}
 	
@@ -33,30 +36,18 @@ class Tabler
 		$this->tableData = $header.$data.$footer;
 		return $this->tableData;
 	}
-	
-	private function GetColumns()
-	{
-		//Returns array of the columns from the query.
-		$result = $this->db->query("Explain ".$this->sql);
-		$row = $result->fetch_object();
-		$this->tableName = $row->table;
-	    $columnQuery = "Describe $this->tableName";
-		$columnResult = $this->db->query($columnQuery);
-		while($columnRow = $columnResult->fetch_object())
-		{
-			$this->columnData[] = $columnRow->Field;
-		}
-	}
-	
+		
 	private function BuildHeader()
 	{
 		$header = "<table class=\"tabler\" cellpadding=\"0\" cellspacing=\"0\">\n";
 		$header .= "\t<thead>\n";
 		$header .= "\t\t<tr>\n";
+	
 		foreach($this->columnData as $column)
 		{
-			$header .= "\t\t\t<th>$column</th>\n";
+			$header .= "\t\t\t<th>".$column->name."</th>\n";
 		}
+		
 		$header .= "\t\t</tr>\n";
 		$header .= "\t</thead>\n";
 		return $header;
@@ -64,12 +55,11 @@ class Tabler
 	
 	private function BuildDataRows()
 	{
-		$result = $this->db->query($this->sql);
 		$data = "\t<tbody>\n";
-		$columnCount = count($this->columnData);
-		while($row = $result->fetch_row())
+		while($row = $this->queryResult->fetch_row())
 		{
 			$data .= "\t\t<tr>\n";
+			$columnCount = count($row);
 			for ($i = 0; $i <= $columnCount -1; $i++)
 			{
     			$data .= "\t\t\t<td>".$row[$i]."</td>\n";
@@ -88,7 +78,7 @@ class Tabler
 	
 	public function __toString()
 	{
-		return $this->GetTable;
+		return $this->tableData;
 	}
 	
 	

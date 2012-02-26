@@ -22,7 +22,8 @@ th {
 	padding:8px 0 8px 8px;
 	border-bottom:1px solid #922121;
 	border-left:1px dotted #922121;
-	text-shadow:0 -1px 0 rgba(0,0,0,.7)
+	text-shadow:0 -1px 0 rgba(0,0,0,.7);
+	text-transform: capitalize;
 }
 
 th:first-child {
