@@ -10,6 +10,7 @@ class Tabler
 	private $tableName;
 	private $tableData;
 	private $columnData; //for holding the columns in the query (array)
+	private $cssClass;
 	
 	public function __construct($sql = NULL)
 	{
@@ -24,8 +25,15 @@ class Tabler
 			$this->sql = $sql;
 			$this->queryResult = $this->db->query($this->sql);
 			$this->columnData = $this->queryResult->fetch_fields();
-			$this->GetTable();
 		}
+		
+		//Set Default Setings
+		$this->cssClass = "tabler";
+	}
+	
+	public function SetCssClass($className)
+	{
+		$this->cssClass = $className;
 	}
 	
 	public function GetTable()
@@ -39,7 +47,7 @@ class Tabler
 		
 	private function BuildHeader()
 	{
-		$header = "<table class=\"tabler\" cellpadding=\"0\" cellspacing=\"0\">\n";
+		$header = "<table class=\"".$this->cssClass."\" cellpadding=\"0\" cellspacing=\"0\">\n";
 		$header .= "\t<thead>\n";
 		$header .= "\t\t<tr>\n";
 	
@@ -78,7 +86,7 @@ class Tabler
 	
 	public function __toString()
 	{
-		return $this->tableData;
+		return $this->GetTable();
 	}
 	
 	

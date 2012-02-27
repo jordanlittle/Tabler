@@ -1,6 +1,9 @@
 <?php
 require_once("core/Tabler.php");
-$tb = new Tabler("select * from Users");
+$table = new Tabler("select * from Users");
+$table->SetCssClass("classname");
+
+
 
 ?>
 <!DOCTYPE html>
@@ -20,7 +23,8 @@ $tb = new Tabler("select * from Users");
 			$('table').tablesorter();
 		});
 	</script>
-	<?php  echo $tb; ?>
+	<?php echo $table; ?>
+
 	
 
 </body>
